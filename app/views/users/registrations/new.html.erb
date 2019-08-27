@@ -31,10 +31,12 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
-  <%= fields_for :secret_code do |sc| %>
-    <%= sc.label :code %>
-    <%= sc.select :code, options_for_select(SecretCode.available_codes&.map{ |i| [i.code, i.id] }), class: 'form-control' %>
-  <% end %>
+  <div class="field">
+    <%= f.fields_for :secret_code, resource.secret_code ? resource.secret_code : resource.build_secret_code do |sc_form| %>
+      <%= sc_form.label :id, 'Secret Code' %>
+      <%= sc_form.collection_select :id, SecretCode.available_codes, :id, :code, include_blank: false, class: "form-control" %>
+    <% end %>
+  </div>
 
   <div class="actions">
     <%= f.submit "Sign up" %>
